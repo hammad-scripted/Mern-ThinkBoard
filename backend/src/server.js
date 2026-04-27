@@ -2,20 +2,26 @@ import express from 'express';
 import notesRouter from './routes/notesRoutes.js';
 import { connectDb } from './config/db.js';
 import chalk from 'chalk';
+import { rateLimiter } from './middlewares/rateLimiter.js';
 const PORT = process.env.PORT || 5001;
 const app = express();
+
+// ** MIDDLEWARE **
+app.use(express.json());
+// // rate limiter
+app.use(rateLimiter);
+
+// ** ROUTES **
+app.use('/api/notes', notesRouter);
 
 connectDb()
   .then((connection) => {
     console.log(chalk.yellow('Database connected'));
-    console.log(chalk.bgGreen(connection.connection.host));
+    console.log(chalk.bgGreen.black(connection.connection.host));
   })
+  .then(() =>
+    app.listen(PORT, () =>
+      console.log(chalk.magenta(`Server running on port ${PORT}`)),
+    ),
+  )
   .catch((error) => console.log(chalk.red(error)));
-
-// ** MIDDLEWARE **
-app.use(express.json());
-app.use('/api/notes', notesRouter);
-
-app.listen(PORT, () => {
-  console.log(chalk.bgBlueBright.green(`Server running on port ${PORT}`));
-});
