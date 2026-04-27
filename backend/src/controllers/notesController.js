@@ -1,13 +1,23 @@
 import Note from '../models/Note.js';
 export const getAllNotes = async (req, res) => {
   try {
-    const notes = await Note.find({});
+    const notes = await Note.find({}).sort({ createdAt: -1 }); //// show the newest first
     return res.status(200).json(notes);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
-
+export const getNoteById = async (req, res) => {
+  try {
+    const note = await Note.findById(req.params.id);
+    if (!note) {
+      return res.status(404).json({ message: 'Note not found' });
+    }
+    return res.status(200).json({ message: 'Note found successfully', note });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 export const createNote = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -32,11 +42,11 @@ export const updateNote = async (req, res) => {
     const { title, content } = req.body;
     const { id } = req.params;
 
-    if (!title || !content) {
-      return res.status(400).json({
-        message: 'Title and content are required',
-      });
-    }
+    // if (!title || !content) {
+    //   return res.status(400).json({
+    //     message: 'Title and content are required',
+    //   });
+    // }
 
     const updatedNote = await Note.findByIdAndUpdate(
       id,
