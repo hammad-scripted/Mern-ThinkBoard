@@ -1,9 +1,9 @@
+import Navbar from '../components/Navbar';
+
 const HomePage = () => {
   return (
-    <div>
-      Hello
-      <button class="btn btn-outline">Click me</button>
-      <button class="btn btn-primary">hello</button>
+    <div className="min-h-screen">
+      <Navbar />
     </div>
   );
 };

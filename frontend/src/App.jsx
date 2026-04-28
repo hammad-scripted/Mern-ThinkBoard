@@ -6,8 +6,6 @@ import CreatePage from './pages/CreatePage.jsx';
 const App = () => {
   return (
     <div>
-      <button class="btn btn-outline">Click me</button>
-      <button class="btn">Button</button>
       <Routes>
         <Route path="/" index element={<HomePage />}></Route>
 
