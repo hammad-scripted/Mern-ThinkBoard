@@ -1,5 +1,5 @@
 const NoteDetailPage = () => {
-  return <div></div>;
+  return <div>Note</div>;
 };
 
 export default NoteDetailPage;
