@@ -1,3 +1,8 @@
+import dns from 'node:dns/promises';
+dns.setServers(['1.1.1.1']);
+
+import 'dotenv/config';
+import cors from 'cors';
 import express from 'express';
 import notesRouter from './routes/notesRoutes.js';
 import { connectDb } from './config/db.js';
@@ -10,6 +15,7 @@ const app = express();
 app.use(express.json());
 // // rate limiter
 app.use(rateLimiter);
+app.use(cors());
 
 // ** ROUTES **
 app.use('/api/notes', notesRouter);
