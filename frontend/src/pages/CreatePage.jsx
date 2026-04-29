@@ -1,16 +1,45 @@
 import { ArrowLeftIcon } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router';
-
+import toast from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router';
+import axios from 'axios';
 const CreatePage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(title);
     console.log(content);
+    if (!title.trim() || !content.trim()) {
+      toast.error('Title and content are required');
+      return;
+    }
+    setLoading(true);
+    try {
+      await axios.post('http://localhost:5001/api/notes/', { title, content });
+      toast.success('Note created successfully');
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+      console.log(error.response);
+
+      if (error.response?.status === 429) {
+        toast.error(
+          'Slow down.You are making too many requests. Please try again later.',
+          {
+            duration: 4000,
+            icon: '💀',
+          },
+        );
+      } else {
+        toast.error('Failed to create note');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="min-h-screen bg-base-200">
@@ -26,25 +55,25 @@ const CreatePage = () => {
               <h2 className="card-title text-2xl mb-4">Create New Note</h2>
 
               <form onSubmit={handleSubmit}>
-                <div className="form-control mb-4">
-                  <label className="label">
-                    <span className="label-text">Title: </span>
+                <div className="form-control mb-4 w-full">
+                  <label className="label pb-1">
+                    <span className="label-text">Title</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Note title"
-                    className="input input-bordered"
+                    className="input input-bordered w-full"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
-                <div className="form-control mb-4">
-                  <label className="label">
-                    <span className="label-text">Content: </span>
+                <div className="form-control mb-4 w-full">
+                  <label className="label pb-1">
+                    <span className="label-text">Content</span>
                   </label>
                   <textarea
                     placeholder="Write your note here..."
-                    className="textarea textarea-bordered h-32 "
+                    className="textarea textarea-bordered h-32 w-full"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                   />
