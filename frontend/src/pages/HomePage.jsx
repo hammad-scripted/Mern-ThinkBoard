@@ -6,6 +6,7 @@ import RateLimitedUI from '../components/RateLimitedUI.jsx';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../libs/axios.js';
+import NotesNotFound from '../components/NotesNotFound.jsx';
 
 const HomePage = () => {
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -41,9 +42,10 @@ const HomePage = () => {
             Loading Notes....
           </div>
         )}
+        {notes.length === 0 && !isRateLimited && <NotesNotFound />}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {notes.map((note) => (
-            <NoteCard key={note._id} note={note} />
+            <NoteCard key={note._id} note={note} setNotes={setNotes} />
           ))}
         </div>
       </div>
