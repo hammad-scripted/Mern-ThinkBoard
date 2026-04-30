@@ -1,10 +1,11 @@
 // HomePage.jsx
 import Navbar from '../components/Navbar.jsx';
 import NoteCard from '../components/NoteCard.jsx';
-import axios from 'axios';
+
 import RateLimitedUI from '../components/RateLimitedUI.jsx';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
+import axiosInstance from '../libs/axios.js';
 
 const HomePage = () => {
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -14,7 +15,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const res = await axios.get('http://localhost:5001/api/notes/');
+        const res = await axiosInstance.get('/notes');
         setNotes(res.data);
         setIsRateLimited(false);
       } catch (error) {
