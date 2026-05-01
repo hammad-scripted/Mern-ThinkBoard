@@ -1,0 +1,13 @@
+{
+  "name": "MERN_THINKBOARD",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "pnpm install --prefix backend/src && pnpm install --prefix frontend && pnpm --prefix frontend build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.0"
+}
