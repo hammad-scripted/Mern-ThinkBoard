@@ -1,7 +1,7 @@
 // NoteCard.jsx
 import { PenSquareIcon, Trash2Icon } from 'lucide-react';
 import { Link } from 'react-router';
-import { formatDate } from '../libs/utils';
+import { formatDate } from '../libs/utils.js';
 import axiosInstance from '../libs/axios.js';
 import toast from 'react-hot-toast';
 const NoteCard = ({ note, setNotes }) => {
